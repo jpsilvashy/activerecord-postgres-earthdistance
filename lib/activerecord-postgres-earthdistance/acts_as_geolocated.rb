@@ -22,8 +22,8 @@ module ActiveRecordPostgresEarthdistance
 
       # Returns objects outside the defined radius
       def outside_radius radius, lat, lng
-        where(["ll_to_earth(#{self.latitude_column}, #{self.longitude_column}) >@ earth_box(ll_to_earth(?, ?), ?)" +
-          "AND earth_distance(ll_to_earth(#{self.latitude_column}, #{self.longitude_column}), ll_to_earth(?, ?)) > ?",
+        where.not(["ll_to_earth(#{self.latitude_column}, #{self.longitude_column}) <@ earth_box(ll_to_earth(?, ?), ?)" +
+          "AND earth_distance(ll_to_earth(#{self.latitude_column}, #{self.longitude_column}), ll_to_earth(?, ?)) <= ?",
           lat, lng, radius, lat, lng, radius])
       end
 
